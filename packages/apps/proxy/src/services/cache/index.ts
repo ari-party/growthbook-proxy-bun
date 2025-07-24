@@ -36,14 +36,17 @@ export const initializeCache = async (context: Context) => {
   if (context.enableCache && context.cacheSettings) {
     if (context.cacheSettings.cacheEngine === "redis") {
       logger.info("using Redis cache");
+      const { RedisCache } = await import("./RedisCache");
       featuresCache = new RedisCache(context.cacheSettings, context);
-      await featuresCache.connect();
+      await (featuresCache as InstanceType<typeof RedisCache>).connect();
     } else if (context.cacheSettings.cacheEngine === "mongo") {
       logger.info("using Mongo cache");
+      const { MongoCache } = await import("./MongoCache");
       featuresCache = new MongoCache(context.cacheSettings);
-      await featuresCache.connect();
+      await (featuresCache as InstanceType<typeof MongoCache>).connect();
     } else {
       logger.info("using in-memory cache");
+      const { MemoryCache } = await import("./MemoryCache");
       featuresCache = new MemoryCache(context.cacheSettings);
     }
   }
