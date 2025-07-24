@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "proxy-monorepo",
-  "repository": "https://github.com/growthbook/growthbook-proxy",
+  "repository": "https://github.com/ari-party/growthbook-proxy-bun",
   "engines": {
     "node": ">=18"
   },
