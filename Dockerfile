@@ -29,4 +29,4 @@ RUN \
 COPY buildinfo* ./buildinfo
 
 EXPOSE 3300
-CMD ["yarn","start"]
+CMD ["bun","start"]
