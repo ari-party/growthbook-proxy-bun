@@ -10,7 +10,7 @@ jobs:
   # Build and publish the commit to docker
   docker:
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'growthbook/growthbook-proxy' }}
+    if: ${{ github.repository == 'ari-party/growthbook-proxy-bun' }}
     permissions:
       contents: read
       id-token: write
@@ -42,7 +42,7 @@ jobs:
           # If this is a tag, echo tag to output
           tag=$(git tag --points-at HEAD)
           if [ -n "$tag" ]; then
-            echo "tag=growthbook/proxy:$tag" >> $GITHUB_OUTPUT
+            echo "tag=robertsspaceindustries/growthbook-proxy-bun:$tag" >> $GITHUB_OUTPUT
           else
             echo "tag=" >> $GITHUB_OUTPUT
           fi
@@ -53,7 +53,7 @@ jobs:
           push: true
           context: .
           tags: |
-            growthbook/proxy:latest
-            growthbook/proxy:git-${{ steps.metadata.outputs.docker_sha }}
+            robertsspaceindustries/growthbook-proxy-bun:latest
+            robertsspaceindustries/growthbook-proxy-bun:git-${{ steps.metadata.outputs.docker_sha }}
             ${{ steps.metadata.outputs.tag }}
           platforms: linux/amd64,linux/arm64
