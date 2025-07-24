@@ -2,11 +2,16 @@
 FROM node:20-slim
 WORKDIR /usr/local/src/app
 
-# Install ca-certificates
+# Install ca-certificates, curl and unzip (needed for Bun installation)
 RUN apt-get update && \
-  apt-get install -y ca-certificates && \
+  apt-get install -y ca-certificates curl unzip && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
+
+# Install Bun
+RUN curl -fsSL https://bun.sh/install | bash
+# Add Bun to the PATH. Bun's installer places it in ~/.bun/bin, which for root is /root/.bun/bin
+ENV PATH="/root/.bun/bin:$PATH"
 
 # Copy over minimum files to install dependencies
 COPY package.json ./package.json
@@ -29,4 +34,5 @@ RUN \
 COPY buildinfo* ./buildinfo
 
 EXPOSE 3300
-CMD ["yarn","start"]
+# Use Bun to start the application
+CMD ["bun","start"]
