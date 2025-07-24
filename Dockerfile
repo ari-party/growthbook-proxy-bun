@@ -7,11 +7,6 @@ RUN apt-get update && apt-get -y upgrade \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
-# Install Bun
-RUN curl -fsSL https://bun.sh/install | bash
-# Add Bun to the PATH. Bun's installer places it in ~/.bun/bin, which for root is /root/.bun/bin
-ENV PATH="/root/.bun/bin:$PATH"
-
 # Copy over minimum files to install dependencies
 COPY package.json ./package.json
 COPY yarn.lock ./yarn.lock
@@ -33,5 +28,4 @@ RUN \
 COPY buildinfo* ./buildinfo
 
 EXPOSE 3300
-# Use Bun to start the application
-CMD ["bun","start"]
+CMD ["yarn","start"]
