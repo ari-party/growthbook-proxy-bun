@@ -1,12 +1,16 @@
 # Build the GrowthBook Proxy app
-FROM node:22-slim
+FROM imbios/bun-node:1-22-slim
 WORKDIR /usr/local/src/app
 
-RUN apt-get update && apt-get -y upgrade
-# Install ca-certificates
-RUN apt-get install -y ca-certificates && \
+RUN apt-get update && apt-get -y upgrade \
+  apt-get install -y ca-certificates curl unzip && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
+
+# Install Bun
+RUN curl -fsSL https://bun.sh/install | bash
+# Add Bun to the PATH. Bun's installer places it in ~/.bun/bin, which for root is /root/.bun/bin
+ENV PATH="/root/.bun/bin:$PATH"
 
 # Copy over minimum files to install dependencies
 COPY package.json ./package.json
@@ -29,4 +33,5 @@ RUN \
 COPY buildinfo* ./buildinfo
 
 EXPOSE 3300
-CMD ["yarn","start"]
+# Use Bun to start the application
+CMD ["bun","start"]
