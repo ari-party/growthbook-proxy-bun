@@ -2,9 +2,9 @@ import { ClusterNode, ClusterOptions, SentinelConnectionOptions } from "ioredis"
 
 import { Context } from "../../types";
 import logger from "../logger";
-import { MemoryCache } from "./MemoryCache";
-import { MongoCache } from "./MongoCache";
-import { RedisCache } from "./RedisCache";
+import type { MemoryCache } from "./MemoryCache";
+import type { RedisCache } from "./RedisCache";
+import type { MongoCache } from "./MongoCache";
 
 export interface CacheEntry {
   payload: unknown;
@@ -38,12 +38,12 @@ export const initializeCache = async (context: Context) => {
       logger.info("using Redis cache");
       const { RedisCache } = await import("./RedisCache");
       featuresCache = new RedisCache(context.cacheSettings, context);
-      await (featuresCache as InstanceType<typeof RedisCache>).connect();
+      await featuresCache?.connect?.();
     } else if (context.cacheSettings.cacheEngine === "mongo") {
       logger.info("using Mongo cache");
       const { MongoCache } = await import("./MongoCache");
       featuresCache = new MongoCache(context.cacheSettings);
-      await (featuresCache as InstanceType<typeof MongoCache>).connect();
+      await featuresCache?.connect?.();
     } else {
       logger.info("using in-memory cache");
       const { MemoryCache } = await import("./MemoryCache");
