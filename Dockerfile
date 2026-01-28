@@ -2,8 +2,9 @@
 FROM imbios/bun-node:1-22-slim
 WORKDIR /usr/local/src/app
 
-RUN apt-get update && apt-get -y upgrade \
-  apt-get install -y ca-certificates curl unzip && \
+RUN apt-get update && apt-get -y upgrade
+# Install ca-certificates
+RUN apt-get install -y ca-certificates curl unzip && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
